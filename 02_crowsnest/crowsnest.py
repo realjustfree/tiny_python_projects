@@ -5,7 +5,12 @@ Date   : 2023-09-26
 Purpose: Rock the Casbah
 
 log
-2023-09-26 19:38 : 책 2.1.8 부터 다시
+    2023-09-26 19:38 : 책 2.1.8 부터 다시
+    2023-09-27 19:44 : 2.4 going further 해야함.
+        test 를 다시써야하는데 구조를 아직 모르겠음.
+        일단 넘어갈 것
+
+
 
 """
 
@@ -34,7 +39,13 @@ def main():
     args = get_args()
     word = args.word
 
-    print(f'Ahoy, Captain, a {word} off the larboard bow!')
+#    pre = "a"
+#    if word[0].lower() in 'aeiou':
+#        pre = "an"
+
+    pre = 'an' if word[0].lower() in 'aeiou' else 'a'
+
+    print(f'Ahoy, Captain, {pre} {word} off the larboard bow!')
 
 
 

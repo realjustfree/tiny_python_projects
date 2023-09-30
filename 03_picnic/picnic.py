@@ -33,6 +33,14 @@ def get_args():
                         help = "Option for Oxford comma",
                         action='store_false')
 
+    parser.add_argument('-m',
+                        '--markadded',
+                        help = "additional mark",
+                        type=str,
+                        metavar="str",
+                        default=","
+                        )
+
     return parser.parse_args()
 
 
@@ -44,6 +52,7 @@ def main():
     items_arg = args.items
     sort_arg = args.sorted
     oxfordcomma_arg = args.oxfordcomma
+    markadded_arg = args.markadded+" "
 
     # print(f'items_arg = "{items_arg}"')
     # print(f'sort_arg = "{sort_arg}"')
@@ -59,13 +68,12 @@ def main():
         # print(f'{oxfordcomma_arg}')
         items_arg[-1] = "and " + items_arg[-1]
         if oxfordcomma_arg:
-            print(f'{", ".join(items_arg)}.')
+            print(f'{markadded_arg.join(items_arg)}.')
         else:
-            print(f'{", ".join(items_arg[:-1])} {items_arg[-1]}.')
+            print(f'{markadded_arg.join(items_arg[:-1])} {items_arg[-1]}.')
 
     elif len(items_arg) >= 2:
         items_arg[-1] = "and "+items_arg[-1]
-        " ".join(items_arg)
         print(f'{" ".join(items_arg)}.')
 
     else:

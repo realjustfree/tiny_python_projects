@@ -75,3 +75,11 @@ def test_option_for_comma():
     out = getoutput(f'python3 {prg} {arg} --oxfordcomma')
     expected = ('You are bringing bananas, apples and cherries.')
     assert out.strip() == expected
+
+def test_option_mark():
+    """further 과제. 기호 받아서 , 대신 mark 사용"""
+
+    arg = 'bananas apples cherries'
+    out = getoutput(f'python3 {prg} {arg} --markadded +')
+    expected = ('You are bringing bananas+ apples+ and cherries.')
+    assert out.strip() == expected

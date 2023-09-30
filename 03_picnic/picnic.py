@@ -28,6 +28,10 @@ def get_args():
                         nargs='+',
                         help='Item(s) to bring')
 
+    parser.add_argument('-o',
+                        '--oxfordcomma',
+                        help = "Option for Oxford comma",
+                        action='store_false')
 
     return parser.parse_args()
 
@@ -39,6 +43,7 @@ def main():
     args = get_args()
     items_arg = args.items
     sort_arg = args.sorted
+    oxfordcomma_arg = args.oxfordcomma
 
     # print(f'items_arg = "{items_arg}"')
     # print(f'sort_arg = "{sort_arg}"')
@@ -51,8 +56,12 @@ def main():
 
 
     if len(items_arg) >= 3:
-        items_arg[-1] = "and "+items_arg[-1]
-        print(f'{", ".join(items_arg)}.')
+        # print(f'{oxfordcomma_arg}')
+        items_arg[-1] = "and " + items_arg[-1]
+        if oxfordcomma_arg:
+            print(f'{", ".join(items_arg)}.')
+        else:
+            print(f'{", ".join(items_arg[:-1])} {items_arg[-1]}.')
 
     elif len(items_arg) >= 2:
         items_arg[-1] = "and "+items_arg[-1]

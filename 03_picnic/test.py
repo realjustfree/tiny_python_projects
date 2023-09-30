@@ -44,10 +44,9 @@ def test_two():
 def test_more_than_two():
     """more than two items"""
 
-    arg = '"potato picnic.py" coleslaw cupcakes "French silk pie"'
+    arg = '"potato sweet" coleslaw cupcakes "French silk pie"'
     out = getoutput(f'python3 {prg} {arg}')
-    expected = ('You are bringing potato picnic.py, coleslaw, '
-                'cupcakes, and French silk pie.')
+    expected = ('You are bringing potato sweet, coleslaw, cupcakes, and French silk pie.')
     assert out.strip() == expected
 
 
@@ -66,4 +65,13 @@ def test_more_than_two_sorted():
     arg = 'bananas apples dates cherries'
     out = getoutput(f'python3 {prg} {arg} --sorted')
     expected = ('You are bringing apples, bananas, cherries, and dates.')
+    assert out.strip() == expected
+
+
+def test_option_for_comma():
+    """further 과제. oxford comma 출력하지 않게"""
+
+    arg = 'bananas apples cherries'
+    out = getoutput(f'python3 {prg} {arg} --oxfordcomma')
+    expected = ('You are bringing bananas, apples and cherries.')
     assert out.strip() == expected

@@ -19,7 +19,7 @@ def test_usage():
     """usage"""
 
     for flag in ['-h', '--help']:
-        rv, out = getstatusoutput(f'{prg} {flag}')
+        rv, out = getstatusoutput(f'python3 {prg} {flag}')
         assert rv == 0
         assert out.lower().startswith('usage')
 
@@ -28,7 +28,7 @@ def test_usage():
 def test_01():
     """test"""
 
-    rv, out = getstatusoutput(f'{prg} 123-456-7890')
+    rv, out = getstatusoutput(f'python3 {prg} 123-456-7890')
     assert rv == 0
     assert out == '987-604-3215'
 
@@ -37,6 +37,15 @@ def test_01():
 def test_02():
     """test"""
 
-    rv, out = getstatusoutput(f'{prg} "That number to call is 098-765-4321."')
+    rv, out = getstatusoutput(f'python3 {prg} "That number to call is 098-765-4321."')
     assert rv == 0
     assert out.rstrip() == 'That number to call is 512-340-6789.'
+
+
+def test_03():
+    """number ⇒ text"""
+    """5 ⇒ five"""
+
+    rv, out = getstatusoutput(f'python3 {prg} -t "09876"')
+    assert rv == 0
+    assert out.rstrip() == 'zeronineeightsevensix'

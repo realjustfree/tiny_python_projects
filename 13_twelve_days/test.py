@@ -33,7 +33,7 @@ def test_usage():
     """usage"""
 
     for flag in ['-h', '--help']:
-        rv, out = getstatusoutput(f'{prg} {flag}')
+        rv, out = getstatusoutput(f'python3 {prg} {flag}')
         assert rv == 0
         assert re.match("usage", out, re.IGNORECASE)
 
@@ -43,7 +43,7 @@ def test_bad_num():
     """test bad_num"""
 
     for n in [random.choice(r) for r in (range(-10, -1), range(13, 20))]:
-        rv, out = getstatusoutput(f'{prg} -n {n}')
+        rv, out = getstatusoutput(f'python3 {prg} -n {n}')
         assert rv != 0
         assert re.search(f'--num "{n}" must be between 1 and 12', out)
 
@@ -52,7 +52,7 @@ def test_bad_num():
 def test_one():
     """test one"""
 
-    out = getoutput(f'{prg} -n 1')
+    out = getoutput(f'python3 {prg} -n 1')
     assert out.rstrip() == day_one
 
 
@@ -60,7 +60,7 @@ def test_one():
 def test_two():
     """test two"""
 
-    out = getoutput(f'{prg} --num 2')
+    out = getoutput(f'python3 {prg} --num 2')
     assert out == '\n\n'.join([day_one, day_two])
 
 
@@ -68,7 +68,7 @@ def test_two():
 def test_all_stdout():
     """test"""
 
-    out = getoutput(f'{prg}').splitlines()
+    out = getoutput(f'python3 {prg}').splitlines()
     assert len(out) == 113
     assert out[0] == 'On the first day of Christmas,'
     assert out[-1] == 'And a partridge in a pear tree.'
@@ -88,8 +88,12 @@ def test_all():
         assert os.path.isfile(expected_file)
         expected = open(expected_file).read().rstrip()
 
-        cmd = f'{prg} -n {n}'
+
+        cmd = f'python3 {prg} -n {n}'
         out = getoutput(cmd).rstrip()
+        print(f"cmd out : \n{out:<10}\n\n")
+        print(f'expectecd : \n{expected:<10}\n\n')
+
         assert out == expected
 
         # Run with --outfile
@@ -99,9 +103,13 @@ def test_all():
 
         try:
             out = getoutput(cmd + f' -o {out_file}').rstrip()
+
+
             assert out == ''
             assert os.path.isfile(out_file)
             output = open(out_file).read().rstrip()
+
+
             assert len(output.split('\n')) == len(expected.split('\n'))
             assert output.rstrip() == expected.rstrip()
         finally:

@@ -70,13 +70,17 @@ def test_random():
 
     print("=======test_random=====")
 
+    print("=======sums=======")
+    print(f'{sums}')
+
+
     for n in random.choices(list(sums.keys()), k=10):
 
         rand_number = random.choice([0,1])
         flag = '-n' if rand_number == 1 else '--num'
-        print(f'rand_number : {rand_number:<10}, flag :{flag}')
-        print(f' n : {n:<10}')
-        print(f'type : {type(n)}')
+        # print(f'rand_number : {rand_number:<10}, flag :{flag}')
+        # print(f' n : {n:<10}')
+        # print(f'type : {type(n)}')
         out =""
         for i in range(int(n), 0,-1):
             out+='\n'
@@ -99,11 +103,11 @@ def main():
 
 
 
-    # for i in range(args.num,0,-1):
-    #     print(verse(i))
+    for i in range(args.num,0,-1):
+        print(verse(i))
 
 
-    test_random()
+    # test_random()
 
 
 

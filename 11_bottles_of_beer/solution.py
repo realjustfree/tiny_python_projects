@@ -2,6 +2,8 @@
 """Bottles of beer song"""
 
 import argparse
+import os
+import hashlib
 
 
 # --------------------------------------------------
@@ -32,8 +34,11 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    print('\n\n'.join(map(verse, range(args.num, 0, -1))))
+    out = '\n\n'.join(map(verse, range(args.num, 0, -1)))
+    print(f'{out}')
+    # print('\n\n'.join(map(verse, range(args.num, 0, -1))))
 
+    #print(f"hash : {hashlib.md5(out.encode('utf-8')).hexdigest()}")
 
 # --------------------------------------------------
 def verse(bottle):
@@ -69,6 +74,9 @@ def test_verse():
     ])
 
 
-# --------------------------------------------------
+# ----------------\
+#
+#
+# ----------------------------------
 if __name__ == '__main__':
     main()

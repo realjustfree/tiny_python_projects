@@ -31,13 +31,14 @@ def get_args():
     return args
 
 def fry(word):
-    if re.match('[yY]ou', word):
+    if re.match('[yY]ou$', word):
         return word[0]+"'all"
     if re.search('(.+)ing$', word):
         match = re.search('(.+)ing$', word)
         if re.search('[aeuioAEUIO]', match.group(1)):
             return match.group(1)+"in'"
         return match.group(1)+"ing"
+    return word
 
 
 def test_fry():

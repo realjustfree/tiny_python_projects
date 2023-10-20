@@ -33,11 +33,24 @@ def get_args():
 def fry(word):
     if re.match('[yY]ou$', word):
         return word[0]+"'all"
+    if re.match('[Yy]our$', word):
+        return word[0] + "'all's"
+    if re.match('very', word, re.IGNORECASE):
+        return 'wicked'
+
+
+    if re.match('[tT]hink', word):
+        if re.search('(.+)ing$', word):
+            word = 'reckoning'
+        else:
+            word = 'reckon'
+
     if re.search('(.+)ing$', word):
         match = re.search('(.+)ing$', word)
         if re.search('[aeuioAEUIO]', match.group(1)):
             return match.group(1)+"in'"
         return match.group(1)+"ing"
+
     return word
 
 
@@ -47,8 +60,10 @@ def test_fry():
     assert fry('fishing') == "fishin'"
     assert fry('Aching') == "Achin'"
     assert fry('swing') == 'swing'
-
-
+    assert fry('your') == "y'all's"
+    assert fry('think') == 'reckon'
+    assert fry('thinking') == "reckonin'"
+    assert fry('very') == "wicked"
 
 # --------------------------------------------------
 def main():

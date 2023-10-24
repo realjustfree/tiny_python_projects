@@ -8,6 +8,8 @@ Purpose: Rock the Casbah
 import argparse
 import os
 import random
+import re
+
 
 # --------------------------------------------------
 def get_args():
@@ -39,7 +41,24 @@ def get_args():
 
 def scramble(word):
     """scramble a word"""
-    pass
+
+    if len(word) > 3 and re.match(r'\w+', word):
+        middle = list(word[1:-1])
+        random.shuffle(middle)
+        word = word[0]+''.join(middle) +word[-1]
+    return word
+
+
+    # if len(word) == 1 or word=="":
+    #     return word
+    #
+    # for word in splitter.split(word):
+    #     word = list(word)
+    #
+    #     word_shuffle = word[1:-1]
+    #     random.shuffle(word_shuffle)
+    #     word_shuffle = ''.join(word_shuffle)
+    #     return word[0]+word_shuffle+word[-1]
 
 def test_scramble():
     """test scramble"""
@@ -61,9 +80,15 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
+    random.seed(args.seed)
+
+    splitter = re.compile("([a-zA-Z](?:[a-zA-Z']*[a-zA-Z])?)")
 
     for line in args.text.splitlines():
-        print(line)
+        print(''.join(map(scramble, splitter.split(line))))
+
+
+
 
 
 

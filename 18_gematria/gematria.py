@@ -31,11 +31,33 @@ def get_args():
     return args
 
 
+def test_word2num():
+    """Test word2num"""
+    assert word2num("a") == "97"
+    assert word2num("abc") == "294"
+    assert word2num("ab'c") == "294"
+    assert word2num("4a-b'c,") == "346"
+
+def word2num(vals):
+    vals = re.sub('[^a-zA-Z0-9]', '', vals)
+    vals_value = str(sum([ord(i) for i in vals]))
+    return vals_value
+
+
+
+
 # --------------------------------------------------
 def main():
     """Make a jazz noise here"""
     args = get_args()
-    print(args.text)
+    for line in args.text.splitlines():
+        word_list=[]
+        for word in line.split():
+            word_list.append(word2num(word))
+        print(' '.join(word_list))
+
+
+
 
 
 # --------------------------------------------------

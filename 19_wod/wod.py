@@ -7,7 +7,11 @@ Purpose: Rock the Casbah
 
 import argparse
 import csv
-
+import io
+import random
+import re
+from pprint import pprint
+from tabulate import tabulate
 
 # --------------------------------------------------
 def get_args():
@@ -48,22 +52,50 @@ def get_args():
     return parser.parse_args()
 
 
+def read_csv(fh):
+    """read the csv input"""
+    reader = csv.DictReader(fh, delimiter=',')
+    exercise = []
+
+    for rec in reader:
+        name, reps = rec['exercise'], rec['reps']
+        reps_match = re.match('(\d+)-(\d+)', reps)
+        low, high = int(reps_match.group(1)), int(reps_match.group(2))
+        exercise.append((name, low, high))
+
+    return exercise
+
+
+def test_read_csv():
+    """test read_csv"""
+
+    text = io.StringIO('exercise,reps\nBurpees,20-50\nSitups,40-100')
+    assert read_csv(text) == [('Burpees', 20, 50), ('Situps', 40, 100)]
+
+
 # --------------------------------------------------
 def main():
     """Make a jazz noise here"""
-
     args = get_args()
-    str_arg = args.arg
-    int_arg = args.int
-    file_arg = args.file
-    flag_arg = args.on
-    pos_arg = args.positional
+    random.seed(args.seed)
 
-    print(f'str_arg = "{str_arg}"')
-    print(f'int_arg = "{int_arg}"')
-    print('file_arg = "{}"'.format(file_arg.name if file_arg else ''))
-    print(f'flag_arg = "{flag_arg}"')
-    print(f'positional = "{pos_arg}"')
+    exercises = read_csv(args.file)
+    choose_exercises = random.sample(exercises, k=args.num)
+
+    list_exercises = []
+    for i in choose_exercises:
+        num_reps = random.randint(i[1], i[2])
+        if args.easy:
+            num_reps = int(num_reps)
+        list_exercises.append((i[0], num_reps))
+
+    print(tabulate(list_exercises, headers=('Exersices', 'Reps')))
+
+
+
+
+
+
 
 
 # --------------------------------------------------

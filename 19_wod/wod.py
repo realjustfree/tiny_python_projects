@@ -12,6 +12,7 @@ import random
 import re
 from pprint import pprint
 from tabulate import tabulate
+import sys
 
 # --------------------------------------------------
 def get_args():
@@ -45,11 +46,15 @@ def get_args():
     parser.add_argument('-e',
                         '--easy',
                         help='Halve the reps',
-                        type=bool,
-                        default=False)
+                        action='store_true')
 
+    args = parser.parse_args()
 
-    return parser.parse_args()
+    if args.num <= 0:
+        sys.exit(f'--num "{args.num}" must be greater than 0')
+
+    return args
+
 
 
 def read_csv(fh):
@@ -86,10 +91,10 @@ def main():
     for i in choose_exercises:
         num_reps = random.randint(i[1], i[2])
         if args.easy:
-            num_reps = int(num_reps)
+            num_reps = int(num_reps/2)
         list_exercises.append((i[0], num_reps))
 
-    print(tabulate(list_exercises, headers=('Exersices', 'Reps')))
+    print(tabulate(list_exercises, headers=('Exersice', 'Reps')))
 
 
 

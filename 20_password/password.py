@@ -8,8 +8,8 @@ Purpose: Rock the Casbah
 import argparse
 import random
 import sys
-
-
+import re
+import string
 
 # --------------------------------------------------
 def get_args():
@@ -19,10 +19,10 @@ def get_args():
         description='Password maker',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('-f',
-                        '--file',
+    parser.add_argument('file',
                         help='Input files(s)',
                         metavar='FILE',
+                        nargs="+",
                         type=argparse.FileType('r'),
                         default=None)
 
@@ -64,7 +64,7 @@ def get_args():
     parser.add_argument('-l',
                         '--l33t',
                         help='Obfuscate letters',
-                        action='store_false')
+                        action='store_true')
 
     args = parser.parse_args()
 
@@ -73,6 +73,19 @@ def get_args():
 
     return args
 
+def clean(word):
+    return re.sub('[^A-Za-z0-9]',"",word)
+
+def ransom(word):
+    return ''.join([char.upper() if random.choice([0,1]) else char.lower() for char in word])
+
+def l33t(word):
+    jump = {"a":"@", "A":"4", "O":"0", "t":"+", "E":"3", "I":"1","S":"5"}
+
+    new_word= ''.join([ransom(char) for char in word])
+
+    return ''.join([jump.get(char) if jump.get(char) else char for char in new_word])+random.choice(string.punctuation)
+
 
 # --------------------------------------------------
 def main():
@@ -80,9 +93,34 @@ def main():
 
     args = get_args()
     random.seed(args.seed)
+    words = set()
+
+    def word_len(word):
+        return args.min_word_len <= len(word) <= args.max_word_len
+
 
     for fh in args.file:
-        print(fh.name)
+        for line in fh:
+            for word in filter(word_len, map(clean, line.title().split())):
+                words.add(word)
+
+    words = sorted(words)
+
+    for _ in range(args.num):
+        random_word = random.sample(words, args.num_words)
+        random_word_list = [ransom(word) for word in random_word]
+
+        if args.l33t:
+            random_word_list_l33t = [l33t(word) for word in random_word]
+
+            print(''.join(random_word_list_l33t))
+
+
+        else: print(''.join(random_word_list))
+
+
+
+
 
 
 # --------------------------------------------------

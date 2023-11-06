@@ -45,12 +45,13 @@ def get_args():
     if any([args.player, args.cell]) and not all([args.player, args.cell]):
         parser.error('Must provide both --player and --cell')
 
-    if len(args.board) != 9 and re.search('[^OX.]', board):
-        parse.error(f'--board "{args.board}" must be 9 charactoer of ., X, O')
-    if args.player and re.search('[^OX.]', args.player()):
-        parse.error("must be 9 charactoer of ., X, O")
+    if len(args.board) != 9 or re.search('[^OX.]', args.board):
+        parser.error(f'--board "{args.board}" must be 9 characters of ., X, O')
+    if args.player and re.search('[^OX.]', args.player):
+        parser.error("must be 9 charactoer of ., X, O")
+
     if args.board and args.cell and args.board[args.cell-1] in 'OX':
-        parser.error(f"--cell '{args.cell}' already taken ")
+        parser.error(f'--cell "{args.cell}" already taken')
 
     return args
 
@@ -76,13 +77,13 @@ def main():
         winner_print = "No winner."
 
     print(f'''
-    {format_board(args.board)}
+{format_board(args.board)}
 {winner_print} 
     '''.strip())
 
     return f'''
-    {format_board(args.board)}
-    {winner_print} 
+{format_board(args.board)}
+{winner_print} 
     '''.strip()
 
 

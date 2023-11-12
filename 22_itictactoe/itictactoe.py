@@ -54,6 +54,7 @@ def main():
     while True:
         board_now = state.board
 
+        print("\033[H\033[J") # terminal 화면 초기화
         print(format_board(board_now))
 
         if find_winner(board_now):

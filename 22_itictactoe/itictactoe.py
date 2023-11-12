@@ -34,6 +34,13 @@ def find_winner(board):
         [0,3,6],[1,4,7], [2,5,8],
         [0,4,8],[2,4,6]]
 
+    #check_not_empty = [1 if i=='.' else 0 for i in board]
+
+    #if sum(check_not_empty) == 0:
+    #    return "full"
+
+
+
     for player in 'OX':
         for i, j, k in winning:
             combo = [board[i], board[j], board[k]]
@@ -48,14 +55,37 @@ def main():
         board_now = state.board
 
         print(format_board(board_now))
-        board_num = input(f'Player {state.player}, what is your move? [q to quit] : ')
+
+        if find_winner(board_now):
+            #if find_winner(board_now) == 'full':
+            #    print("Draw")
+            #    break
+
+            print(f'{find_winner(board_now)} has won!')
+            break
+
+
+        board_num = input(f'Player {state.player}, what is your move? [q to '
+                          f'quit] : ')
+
 
         if board_num == 'q':
             break
-        if re.search('[0-9]', board_num):
-            board_now[int(board_num)-1] = state.player
+        if re.search('^[0-9]{1}$', board_num):
+            if board_now[int(board_num)-1] in 'OX':
+                print(f'Cell "{board_num}" already taken.')
+            else:
+                board_now[int(board_num)-1] = state.player
+                state = state._replace(board=board_now, player=change_player(state.player))
+        else:
+            print(f'Invalid cell "{board_num}", please use 1-9')
 
-            state = state._replace(board=board_now, player=change_player(state.player))
+
+
+
+
+
+
 
 
 def change_player(player):
